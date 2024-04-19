@@ -3,6 +3,7 @@ name = "polars-candle"
 version = "0.1.0"
 edition = "2021"
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
+build = "src/build.rs"
 
 [lib]
 name = "polars_candle"
@@ -22,6 +23,12 @@ serde_json = "1.0.115"
 thiserror = "1.0.56"
 tracing = "0.1.40"
 
+
+[features]
+default = []
+metal = ["glowrs/metal"]
+accelerate = ["glowrs/accelerate"]
+cuda = ["glowrs/cuda"]
 
 [profile.release]
 codegen-units = 1

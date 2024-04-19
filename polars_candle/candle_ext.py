@@ -37,12 +37,12 @@ class CandleExt:
 		Parameters
 		----------
 		model_repo
-			The name of the model to use.
+			The repository name of the text embedding model to use. E.g. "sentence-transformers/all-MiniLM-L6-v2".
 
 		Returns
 		-------
 		Expr
-				An expression with the embedded text.
+			An expression with the embedded text.
 		"""
 
 		return register_plugin_function(
