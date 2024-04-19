@@ -29,7 +29,7 @@ print(df)
 ```
 
 Currently, Bert, JinaBert, and Distilbert models are supported. More models will be added in the future. Check 
-my other repository [`wdoppenberg/glowrs`](https://github.com/wdoppenberg/glowrs) to learn more on the underlying 
+my other repository [`wdoppenberg/glowrs`](https://github.com/wdoppenberg/glowrs) to learn more about the underlying 
 implementation for sentence embedding.
 
 # Installation
@@ -67,7 +67,7 @@ Where `<feature>` can be one of the following:
 
 - Massive thanks to [`polars`](https://pola.rs/) & their contributors for providing a blazing fast DataFrame library 
 with the ability to extend it with custom functions using [`pyo3-polars`](https://github.com/pola-rs/pyo3-polars).
-- The great work done by Huggingface on [`candle`](https://github.com/huggingface/candle) for providing a simple
+- Great work so far by Huggingface on [`candle`](https://github.com/huggingface/candle) for providing a simple
 interface to run ML models.
 
 
