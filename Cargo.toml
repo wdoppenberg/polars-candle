@@ -1,0 +1,29 @@
+[package]
+name = "polars-candle"
+version = "0.1.0"
+edition = "2021"
+authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
+
+[lib]
+name = "polars_candle"
+crate-type = ["cdylib"]
+
+
+[dependencies]
+anyhow = "1.0.79"
+glowrs = "0.1.9"
+chrono = "0.4.35"
+ndarray = "0.15.6"
+polars = { version = "0.39.2", features = ["lazy", "dtype-array", "dtype-categorical", "ndarray", "log"] }
+pyo3 = { version = "0.21.2", features = ["extension-module"] }
+pyo3-polars = { version = "0.13.0", features = ["derive"] }
+serde = { version = "1.0.197", features = ["derive"] }
+serde_json = "1.0.115"
+thiserror = "1.0.56"
+tracing = "0.1.40"
+
+
+[profile.release]
+codegen-units = 1
+strip = "debuginfo"
+lto = "thin"

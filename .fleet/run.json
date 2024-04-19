@@ -1,0 +1,22 @@
+{
+	"configurations": [
+		{
+			"type": "python-tests",
+			"name": "Python-tests configuration",
+			"testFramework": "pytest",
+			"targets": [],
+			"dependsOn": ["Dev build"]
+		},
+		{
+			"type": "command",
+			"name": "Dev build",
+			"program": "maturin",
+			"args": ["develop"]
+		},
+		{
+			"type": "cargo",
+			"name": "Cargo Test",
+			"cargoArgs": ["test"]
+		}
+	]
+}
