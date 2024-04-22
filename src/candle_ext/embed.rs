@@ -1,7 +1,7 @@
 // Needed for the `polars_expr` macro
 #![allow(clippy::unused_unit)]
 
-use glowrs::SentenceTransformer;
+use glowrs::{PoolingStrategy, SentenceTransformer};
 use polars::error::PolarsResult;
 use polars::prelude::*;
 use pyo3_polars::derive::polars_expr;
@@ -19,6 +19,9 @@ fn array_f32_output(_: &[Field]) -> PolarsResult<Field> {
 pub struct EmbeddingKwargs {
     /// Huggingface model repository name
     pub model_repo: String,
+
+    /// Pooling strategy
+    pub pooling: PoolingStrategy,
 }
 
 #[polars_expr(output_type_func=array_f32_output)]
@@ -28,7 +31,8 @@ pub fn embed_text(s: &[Series], kwargs: EmbeddingKwargs) -> PolarsResult<Series>
     let len = ca.len();
 
     let model = SentenceTransformer::from_repo_string(&kwargs.model_repo)
-        .map_err(|e| polars_err!(ComputeError: "Failed to load model: {}", e))?;
+        .map_err(|e| polars_err!(ComputeError: "Failed to load model: {}", e))?
+        .with_pooling_strategy(kwargs.pooling);
 
     let sentences: Vec<Option<&str>> = ca.into_iter().collect();
 

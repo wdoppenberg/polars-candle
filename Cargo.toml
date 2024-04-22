@@ -1,9 +1,12 @@
 [package]
 name = "polars-candle"
-version = "0.1.0"
+version = "0.1.2"
 edition = "2021"
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
 build = "src/build.rs"
+description = "A text embedding extension for the Polars Dataframe library."
+keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
+license = "Apache-2.0"
 
 [lib]
 name = "polars_candle"
@@ -12,7 +15,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1.0.79"
-glowrs = "0.1.9"
+glowrs = "0.2.1"
 chrono = "0.4.35"
 ndarray = "0.15.6"
 polars = { version = "0.39.2", features = ["lazy", "dtype-array", "dtype-categorical", "ndarray", "log"] }
