@@ -1,7 +1,7 @@
 // Needed for the `polars_expr` macro
 #![allow(clippy::unused_unit)]
 
-use glowrs::{SentenceTransformer, PoolingStrategy};
+use glowrs::{PoolingStrategy, SentenceTransformer};
 use polars::error::PolarsResult;
 use polars::prelude::*;
 use pyo3_polars::derive::polars_expr;
@@ -14,7 +14,6 @@ fn array_f32_output(_: &[Field]) -> PolarsResult<Field> {
         DataType::List(Box::new(DataType::Float32)),
     ))
 }
-
 
 #[derive(Deserialize)]
 pub struct EmbeddingKwargs {
