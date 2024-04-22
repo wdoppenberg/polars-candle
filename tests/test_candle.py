@@ -29,3 +29,20 @@ def test_basic_with_none():
     df = df.explode("s_embedding")
 
     assert df["s_embedding"].dtype == pl.Float32
+
+
+def test_pooling():
+    df = pl.DataFrame({"s": ["This is a sentence", "This is another sentence"]})
+
+    df = df.with_columns(
+        pl.col("s")
+        .candle.embed_text("Snowflake/snowflake-arctic-embed-xs", pooling="max")
+        .alias("s_embedding")
+    )
+    print(df)
+    assert df["s_embedding"].dtype == pl.Array
+
+    df = df.explode("s_embedding")
+
+    assert df["s_embedding"].dtype == pl.Float32
+    assert df["s_embedding"].max() > 0.0

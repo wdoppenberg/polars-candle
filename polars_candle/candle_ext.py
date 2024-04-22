@@ -30,7 +30,7 @@ class CandleExt:
 	def __init__(self, expr: pl.Expr) -> None:
 		self._expr = expr
 
-	def embed_text(self, model_repo: str) -> pl.Expr:
+	def embed_text(self, model_repo: str, pooling: Literal["max", "sum", "mean"] = "mean") -> pl.Expr:
 		"""
 		Embed text using a pre-trained model.
 
@@ -38,6 +38,8 @@ class CandleExt:
 		----------
 		model_repo
 			The repository name of the text embedding model to use. E.g. "sentence-transformers/all-MiniLM-L6-v2".
+		pooling
+			The pooling strategy to use. One of "max", "sum", or "mean".
 
 		Returns
 		-------
@@ -49,6 +51,6 @@ class CandleExt:
 			plugin_path=Path(__file__).parent,
 			function_name="embed_text",
 			args=[self._expr],
-			kwargs={"model_repo": model_repo},
+			kwargs={"model_repo": model_repo, "pooling": pooling},
 			is_elementwise=True,
 		)
