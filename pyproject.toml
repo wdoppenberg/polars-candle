@@ -34,8 +34,9 @@ license = "Apache-2.0"
 python = "^3.8"
 polars = "^0.20.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 ruff = "*"
 mypy = "*"
 maturin = "*"
+pytest = "*"
