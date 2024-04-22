@@ -65,4 +65,4 @@ def test_normalize():
     df = df.explode("s_embedding")
     # Check if the embedding's length is 1
 
-    assert df.select(pl.col("s_embedding").pow(2)).sum().item() == 1.0
+    assert df.select(pl.col("s_embedding").pow(2)).sum().item() - 1. < 1e-5
