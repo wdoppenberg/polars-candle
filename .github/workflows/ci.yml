@@ -87,7 +87,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheel-darwin-${{ matrix.py-version }}
           path: ${{ github.workspace }}/dist
 
   build-windows:
@@ -110,7 +110,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheel-windows-${{ matrix.py-version }}
           path: ${{ github.workspace }}/dist
 
   build-linux:
@@ -135,7 +135,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheel-ubuntu-${{ matrix.py-version }}
           path: ${{ github.workspace }}/dist
             
   wheel-publish:
@@ -144,8 +144,6 @@ jobs:
     needs: [ build-macos, build-windows, build-linux ]
     steps:
       - uses: actions/download-artifact@v4
-        with:
-          name: wheels
       - name: Publish to PyPI
         env:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
