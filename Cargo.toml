@@ -1,6 +1,6 @@
 [package]
 name = "polars-candle"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
 build = "src/build.rs"
@@ -15,7 +15,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1.0.79"
-glowrs = "0.2.1"
+glowrs = "0.3.0"
 chrono = "0.4.35"
 ndarray = "0.15.6"
 polars = { version = "0.39.2", features = ["lazy", "dtype-array", "dtype-categorical", "ndarray", "log"] }

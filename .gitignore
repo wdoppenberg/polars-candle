@@ -89,3 +89,5 @@ docs/_build/
 # Polars Extension
 .so
 .dll
+
+notebooks/
