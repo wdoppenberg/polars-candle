@@ -77,12 +77,13 @@ jobs:
       # need the correct Rust toolchain.
       - name: Rustup install aarch64 target
         run: rustup target add aarch64-apple-darwin
-        if: ${{ matrix.target == '--universal2' }}
-      - name: Build wheels - universal2
+
+      - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
-          target: universal2-apple-darwin
+          target: aarch64-apple-darwin
           args: --release --out dist -i ${{ matrix.py-version }}
+
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
@@ -124,6 +125,10 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.py-version }}
+
+      - name: Install SSL library
+        run: sudo apt-get install -y openssl libssl-dev ca-certificates pkg-config
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
