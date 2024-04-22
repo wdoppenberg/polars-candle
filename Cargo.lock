@@ -992,11 +992,10 @@ checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
 
 [[package]]
 name = "glowrs"
-version = "0.2.1"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2032d988976b786ca0949036bd97b1ae2bfa2c60318d9e93517ed19a8818ef0d"
+checksum = "00f4401fe6c9d854d83fc22f3ba06df3d4cbc2ed2c251965590bae54f3c1f65c"
 dependencies = [
- "anyhow",
  "candle-core",
  "candle-nn",
  "candle-transformers",

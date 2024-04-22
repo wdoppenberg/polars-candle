@@ -14,8 +14,13 @@ import polars_candle  # ignore: F401
 
 df = pl.DataFrame({"s": ["This is a sentence", "This is another sentence"]})
 
+embed_kwargs = {
+    "model_repo": "Snowflake/snowflake-arctic-embed-xs",
+    "pooling": "mean", 
+}
+
 df = df.with_columns(
-    pl.col("s").candle.embed_text("Snowflake/snowflake-arctic-embed-xs").alias("s_embedding")
+    pl.col("s").candle.embed_text(**embed_kwargs).alias("s_embedding")
 )
 print(df)
 # ┌──────────────────────────┬───────────────────────────────────┐
@@ -34,16 +39,23 @@ implementation for sentence embedding.
 
 # Installation
 
-Clone the repository and install the package using:
+Make sure you have `polars` installed. If not, install it using `pip install polars`. Then, install `polars-candle` using
 
 ```bash
-pip install .
+pip install polars-candle
 ```
 
-_Note:_ PyPI package is not available yet, will be in the future.
+If you want to install the latest version from the repository, you can use:
 
-If you're on a Mac with an ARM processor, the library will install with Metal acceleration by default. 
-Should you want more control over the installation, you can install the package using:
+```bash
+pip install git+https://github.com/wdoppenberg/polars-candle.git
+```
+
+_Note:_ You need to have the Rust toolchain installed on your system to compile the library. See 
+[here](https://www.rust-lang.org/tools/install) for instructions on how to install Rust.
+
+If you're on a Mac with an ARM processor, the library will compile with Metal acceleration by default. 
+Should you want more control over the installation, you can set build features using `maturin`:
 
 ```bash
 maturin develop --release -F <feature>

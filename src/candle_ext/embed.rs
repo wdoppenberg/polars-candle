@@ -22,6 +22,9 @@ pub struct EmbeddingKwargs {
 
     /// Pooling strategy
     pub pooling: PoolingStrategy,
+
+    /// Normalize embeddings
+    pub normalize: bool,
 }
 
 #[polars_expr(output_type_func=array_f32_output)]
@@ -47,8 +50,10 @@ pub fn embed_text(s: &[Series], kwargs: EmbeddingKwargs) -> PolarsResult<Series>
         .iter()
         .filter_map(|(_, sentence)| **sentence)
         .collect();
+
+    // Embed the sentences
     let embeddings = model
-        .encode_batch(some_sentences, false)
+        .encode_batch(some_sentences, kwargs.normalize)
         .map_err(|e| polars_err!(ComputeError: "Encoding failed with error:\n{}", e))?;
 
     let (_, emb_dim) = embeddings.dims2().map_err(
