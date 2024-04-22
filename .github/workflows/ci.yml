@@ -131,8 +131,8 @@ jobs:
         with:
           rust-toolchain: stable
           target: x86_64
+          container: ubuntu-latest
           manylinux: auto
-          before-script-linux: sudo apt-get install -y openssl libssl-dev ca-certificates pkg-config
           args: --release --out dist -i ${{ matrix.py-version }}
       - name: Upload wheels
         uses: actions/upload-artifact@v3
