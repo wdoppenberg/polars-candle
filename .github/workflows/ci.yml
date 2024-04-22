@@ -33,6 +33,14 @@ jobs:
       with:
         tool: maturin
 
+    - name: Check if Cargo.toml version & pyproject.toml version match
+      run: |
+        CARGO_VERSION=$(grep -e '^version\s*=\s*"' Cargo.toml | head -1 | cut -d '"' -f2)
+        POETRY_VERSION=$(poetry version -s)
+        if [ "$CARGO_VERSION" != "$POETRY_VERSION" ]; then
+          exit 1
+        fi
+
     # poetry update will install all dependencies for our package, as well as maturin, which we use as our build
     # back-end
     - name: Poetry install
