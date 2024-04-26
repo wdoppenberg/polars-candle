@@ -24,6 +24,11 @@ jobs:
       with:
         python-version: "3.10"
 
+    # poetry update will install all dependencies for our package, as well as maturin, which we use as our build
+    # back-end
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
     - name: Check if Cargo.toml version & pyproject.toml version match
       run: |
         CARGO_VERSION=$(grep -e '^version\s*=\s*"' Cargo.toml | head -1 | cut -d '"' -f2)
@@ -32,11 +37,6 @@ jobs:
           exit 1
         fi
 
-    # poetry update will install all dependencies for our package, as well as maturin, which we use as our build
-    # back-end
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      
     - name: Build wheels
       if: matrix.runner != 'macos-14'
       uses: PyO3/maturin-action@v1
