@@ -64,7 +64,7 @@ jobs:
   build-macos:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
     needs: [ test-linux ]
-    runs-on: macos-latest
+    runs-on: macos-14
     strategy:
       matrix:
         py-version: [ '3.9', '3.10', '3.11', '3.12' ]

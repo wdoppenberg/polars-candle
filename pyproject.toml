@@ -1,34 +1,17 @@
-[build-system]
-requires = ["maturin>=1.0,<2.0"]
-build-backend = "maturin"
-
-[project]
+[tool.poetry]
 name = "polars_candle"
-requires-python = ">=3.8"
+version = "0.1.5"
+description = "A text embedding extension for the Polars Dataframe library."
+keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
+authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
+license = "Apache-2.0"
 classifiers = [
   "Programming Language :: Rust",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+urls = { repository = "https://github.com/wdoppenberg/polars-candle" }
 
-
-[dependencies]
-polars = ">=0.20.0"
-
-[dev-dependencies]
-pytest = "*"
-black = "*"
-ruff = "*"
-mypy = "*"
-maturin = "*"
-
-[tool.poetry]
-name = "polars_candle"
-version = "0.1.4"
-description = "A text embedding extension for the Polars Dataframe library."
-keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
-authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
-license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -40,3 +23,8 @@ ruff = "*"
 mypy = "*"
 maturin = "*"
 pytest = "*"
+polars-distance = "*"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
