@@ -24,15 +24,6 @@ jobs:
       with:
         python-version: "3.10"
 
-    # We install poetry as a dependency manager to read the pyproject.toml of our package.
-    - name: Poetry
-      run: pipx install poetry==1.8.2
-
-    - name: Maturin
-      uses: taiki-e/install-action@v2
-      with:
-        tool: maturin
-
     - name: Check if Cargo.toml version & pyproject.toml version match
       run: |
         CARGO_VERSION=$(grep -e '^version\s*=\s*"' Cargo.toml | head -1 | cut -d '"' -f2)
@@ -43,15 +34,15 @@ jobs:
 
     # poetry update will install all dependencies for our package, as well as maturin, which we use as our build
     # back-end
-    - name: Poetry install
-      run: poetry install --sync --no-root
-      working-directory: ${{ github.workspace }}
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
       
     - name: Build wheels
       if: matrix.runner != 'macos-14'
       uses: PyO3/maturin-action@v1
       with:
         command: develop
+        sccache: true
 
     - name: Build wheels
       if: matrix.runner == 'macos-14'
@@ -60,6 +51,7 @@ jobs:
         command: develop
         target: aarch64-apple-darwin
         args: --release -F metal
+        sccache: true
       
     - name: cargo test
       run: cargo test
