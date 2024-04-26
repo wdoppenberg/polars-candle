@@ -1,9 +1,7 @@
-[tool.poetry]
+[project]
 name = "polars_candle"
 version = "0.1.6"
-description = "A text embedding extension for the Polars Dataframe library."
-keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
-authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
+requires-python = ">=3.9"
 license = "Apache-2.0"
 classifiers = [
   "Programming Language :: Rust",
@@ -11,6 +9,15 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 urls = { repository = "https://github.com/wdoppenberg/polars-candle" }
+keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
+
+
+[tool.poetry]
+name = "polars_candle"
+version = "0.1.6"
+description = "A text embedding extension for the Polars Dataframe library."
+authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
+
 
 
 [tool.poetry.dependencies]
