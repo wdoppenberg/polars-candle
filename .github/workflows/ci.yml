@@ -33,6 +33,7 @@ jobs:
         virtualenvs-in-project: true
 
     - name: Check if Cargo.toml version & pyproject.toml version match
+      if: matrix.runner == 'ubuntu-latest'
       run: |
         CARGO_VERSION=$(grep -e '^version\s*=\s*"' Cargo.toml | head -1 | cut -d '"' -f2)
         POETRY_VERSION=$(poetry version -s)
