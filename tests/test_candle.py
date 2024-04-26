@@ -32,6 +32,16 @@ def test_basic_two_sentences():
     assert df["s_embedding"].dtype == pl.Float32
 
 
+def test_basic_two_sentences_with_gpu():
+    df = pl.DataFrame({"s": ["This is a sentence", "This is another sentence"]})
+
+    df = df.with_columns(
+        pl.col("s")
+        .candle.embed_text("Snowflake/snowflake-arctic-embed-xs", device="gpu")
+        .alias("s_embedding")
+    )
+
+
 def test_basic_with_none():
     df = pl.DataFrame(
         {"s": ["This is a sentence", None, "This is another sentence", None]}

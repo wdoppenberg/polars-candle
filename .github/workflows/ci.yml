@@ -10,11 +10,11 @@ on:
 
 jobs:
   # Build for manylinux, which allows it to be run on many different Linux platforms
-  test-linux:
+  build-and-test:
     strategy:
       matrix:
-        py-version: ['3.9', '3.10', '3.11', '3.12']
-    runs-on: ubuntu-latest
+        runner: [ ubuntu-latest, macos-14 ]
+    runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -22,18 +22,18 @@ jobs:
     # container that will ensure compatibility. See the action repository for more info.
     - uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.py-version }}
+        python-version: "3.10"
 
-    # We install poetry as a dependency manager to read the pyproject.toml of our package.
-    - name: Poetry
-      run: pipx install poetry==1.8.2
-
-    - name: Maturin
-      uses: taiki-e/install-action@v2
+    # poetry update will install all dependencies for our package, as well as maturin, which we use as our build
+    # back-end
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
       with:
-        tool: maturin
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     - name: Check if Cargo.toml version & pyproject.toml version match
+      if: matrix.runner == 'ubuntu-latest'
       run: |
         CARGO_VERSION=$(grep -e '^version\s*=\s*"' Cargo.toml | head -1 | cut -d '"' -f2)
         POETRY_VERSION=$(poetry version -s)
@@ -41,21 +41,33 @@ jobs:
           exit 1
         fi
 
-    # poetry update will install all dependencies for our package, as well as maturin, which we use as our build
-    # back-end
     - name: Poetry install
       run: poetry install --sync --no-root
       working-directory: ${{ github.workspace }}
-      
-    - name: maturin develop
-      run: |
-        . $(poetry env info --path)/bin/activate
-        maturin develop
-      working-directory: ${{ github.workspace }}
-      
+
+    - name: Build wheels
+      if: matrix.runner != 'macos-14'
+      uses: PyO3/maturin-action@v1
+      with:
+        command: develop
+        sccache: true
+      env:
+        VIRUTAL_ENV: ${{ github.workspace }}/.venv
+
     - name: cargo test
       run: cargo test
       working-directory: ${{ github.workspace }}
+
+    - name: Build wheels
+      if: matrix.runner == 'macos-14'
+      uses: PyO3/maturin-action@v1
+      with:
+        command: develop
+        target: aarch64-apple-darwin
+        args: --release -F metal
+        sccache: true
+      env:
+        VIRUTAL_ENV: ${{ github.workspace }}/.venv
     
     - name: poetry pytest
       run: poetry run pytest tests -s
@@ -63,7 +75,7 @@ jobs:
   
   build-macos:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-    needs: [ test-linux ]
+    needs: [ build-and-test ]
     runs-on: macos-14
     strategy:
       matrix:
@@ -82,7 +94,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: aarch64-apple-darwin
-          args: --release --out dist -i ${{ matrix.py-version }}
+          args: --release -F metal --out dist -i ${{ matrix.py-version }}
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
@@ -92,7 +104,7 @@ jobs:
 
   build-windows:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-    needs: [ test-linux ]
+    needs: [ build-and-test ]
     runs-on: windows-latest
     strategy:
       matrix:
@@ -115,7 +127,7 @@ jobs:
 
   build-linux:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-    needs: [ test-linux ]
+    needs: [ build-and-test ]
     runs-on: ubuntu-latest
     strategy:
       matrix:

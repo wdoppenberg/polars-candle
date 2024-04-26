@@ -3,7 +3,6 @@ name = "polars-candle"
 version = "0.1.5"
 edition = "2021"
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
-build = "src/build.rs"
 description = "A text embedding extension for the Polars Dataframe library."
 keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
 license = "Apache-2.0"

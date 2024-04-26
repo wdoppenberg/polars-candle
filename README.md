@@ -54,8 +54,7 @@ pip install git+https://github.com/wdoppenberg/polars-candle.git
 _Note:_ You need to have the Rust toolchain installed on your system to compile the library. See 
 [here](https://www.rust-lang.org/tools/install) for instructions on how to install Rust.
 
-If you're on a Mac with an ARM processor, the library will compile with Metal acceleration by default. 
-Should you want more control over the installation, you can set build features using `maturin`:
+You can set build features using `maturin`:
 
 ```bash
 maturin develop --release -F <feature>
