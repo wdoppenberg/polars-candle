@@ -40,6 +40,10 @@ jobs:
           exit 1
         fi
 
+    - name: Poetry install
+      run: poetry install --sync --no-root
+      working-directory: ${{ github.workspace }}
+
     - name: Build wheels
       if: matrix.runner != 'macos-14'
       uses: PyO3/maturin-action@v1
