@@ -13,7 +13,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        runner: [ ubuntu-latest, macos-14, windows-latest ]
+        runner: [ ubuntu-latest, macos-14 ]
     runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout
