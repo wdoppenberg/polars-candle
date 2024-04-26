@@ -47,19 +47,23 @@ jobs:
       run: poetry install --sync --no-root
       working-directory: ${{ github.workspace }}
       
-    - name: maturin develop
+    - name: Build wheels
       if: matrix.runner != 'macos-14'
-      run: |
-        . $(poetry env info --path)/bin/activate
-        maturin develop
-      working-directory: ${{ github.workspace }}
+      uses: PyO3/maturin-action@v1
+      with:
+        command: develop
 
-    - name: maturin develop (with Metal)
+    - name: Rustup install aarch64 target
       if: matrix.runner == 'macos-14'
-      run: |
-          . $(poetry env info --path)/bin/activate
-          maturin develop -F metal
-      working-directory: ${{ github.workspace }}
+      run: rustup target add aarch64-apple-darwin
+
+    - name: Build wheels
+      if: matrix.runner == 'macos-14'
+      uses: PyO3/maturin-action@v1
+      with:
+        command: develop
+        target: aarch64-apple-darwin
+        args: --release -F metal
       
     - name: cargo test
       run: cargo test
