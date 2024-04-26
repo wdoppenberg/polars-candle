@@ -13,7 +13,7 @@ jobs:
   test-linux:
     strategy:
       matrix:
-        py-version: ['3.9', '3.10', '3.11', '3.12']
+        runner: [ ubuntu-latest, macos-14, windows-latest ]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -22,7 +22,7 @@ jobs:
     # container that will ensure compatibility. See the action repository for more info.
     - uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.py-version }}
+        python-version: 3.10
 
     # We install poetry as a dependency manager to read the pyproject.toml of our package.
     - name: Poetry
@@ -48,9 +48,17 @@ jobs:
       working-directory: ${{ github.workspace }}
       
     - name: maturin develop
+      if: runner != 'macos-14'
       run: |
         . $(poetry env info --path)/bin/activate
         maturin develop
+      working-directory: ${{ github.workspace }}
+
+    - name: maturin develop (with Metal)
+      if: runner == 'macos-14'
+      run: |
+          . $(poetry env info --path)/bin/activate
+          maturin develop -F metal
       working-directory: ${{ github.workspace }}
       
     - name: cargo test
@@ -82,7 +90,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: aarch64-apple-darwin
-          args: --release --out dist -i ${{ matrix.py-version }}
+          args: --release -F metal --out dist -i ${{ matrix.py-version }}
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
