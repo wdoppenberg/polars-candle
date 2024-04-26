@@ -71,7 +71,7 @@ jobs:
   
   build-macos:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-    needs: [ test-linux ]
+    needs: [ build-and-test ]
     runs-on: macos-14
     strategy:
       matrix:
@@ -100,7 +100,7 @@ jobs:
 
   build-windows:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-    needs: [ test-linux ]
+    needs: [ build-and-test ]
     runs-on: windows-latest
     strategy:
       matrix:
@@ -123,7 +123,7 @@ jobs:
 
   build-linux:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-    needs: [ test-linux ]
+    needs: [ build-and-test ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
