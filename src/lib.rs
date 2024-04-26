@@ -1,7 +1,6 @@
 use pyo3::types::PyModule;
 use pyo3::{pymodule, Bound, PyResult};
 
-mod build;
 pub mod candle_ext;
 
 #[pymodule]

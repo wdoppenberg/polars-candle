@@ -54,6 +54,10 @@ jobs:
       env:
         VIRUTAL_ENV: ${{ github.workspace }}/.venv
 
+    - name: cargo test
+      run: cargo test
+      working-directory: ${{ github.workspace }}
+
     - name: Build wheels
       if: matrix.runner == 'macos-14'
       uses: PyO3/maturin-action@v1
@@ -64,16 +68,6 @@ jobs:
         sccache: true
       env:
         VIRUTAL_ENV: ${{ github.workspace }}/.venv
-      
-    - name: cargo test
-      if: matrix.runner == 'ubuntu-latest'
-      run: cargo test
-      working-directory: ${{ github.workspace }}
-
-    - name: cargo test
-      if: matrix.runner == 'ubuntu-latest'
-      run: cargo test -F metal
-      working-directory: ${{ github.workspace }}
     
     - name: poetry pytest
       run: poetry run pytest tests -s
