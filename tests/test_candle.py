@@ -184,7 +184,7 @@ def test_large_text():
 
     df = df.with_columns(
         pl.col("s")
-        .candle.embed_text("Snowflake/snowflake-arctic-embed-xs", device="gpu")
+        .candle.embed_text("Snowflake/snowflake-arctic-embed-xs")
         .alias("s_embedding")
     )
 
