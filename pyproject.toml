@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "polars_candle"
-version = "0.1.5"
+version = "0.1.6"
 description = "A text embedding extension for the Polars Dataframe library."
 keywords = ["polars", "dataframe", "embedding", "nlp", "candle"]
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
