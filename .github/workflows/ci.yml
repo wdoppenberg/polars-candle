@@ -48,14 +48,14 @@ jobs:
       working-directory: ${{ github.workspace }}
       
     - name: maturin develop
-      if: ${{ matrix.runner != 'macos-14' }}
+      if: matrix.runner != 'macos-14'
       run: |
         . $(poetry env info --path)/bin/activate
         maturin develop
       working-directory: ${{ github.workspace }}
 
     - name: maturin develop (with Metal)
-      if: ${{ matrix.runner == 'macos-14' }}
+      if: matrix.runner == 'macos-14'
       run: |
           . $(poetry env info --path)/bin/activate
           maturin develop -F metal
