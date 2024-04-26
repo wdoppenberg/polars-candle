@@ -1086,9 +1086,9 @@ checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
 
 [[package]]
 name = "glowrs"
-version = "0.4.0"
+version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c6f343362dee2a660f62c931db49cd6e9cfde0c29619dc867bd0a6eab66a164"
+checksum = "df9a37b31b449d324bfc99f3847946bc8ab6ac5d555ab414458415c900859a9f"
 dependencies = [
  "candle-core",
  "candle-nn",
@@ -2044,7 +2044,7 @@ dependencies = [
 
 [[package]]
 name = "polars-candle"
-version = "0.1.6"
+version = "0.1.7"
 dependencies = [
  "anyhow",
  "candle-core",
