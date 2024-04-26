@@ -45,6 +45,9 @@ Make sure you have `polars` installed. If not, install it using `pip install pol
 pip install polars-candle
 ```
 
+_Note:_ The macOS ARM wheels of this library come with Metal support out of the box. For CUDA, check the below 
+instructions on how to build from source. 
+
 If you want to install the latest version from the repository, you can use:
 
 ```bash
@@ -61,8 +64,8 @@ maturin develop --release -F <feature>
 ```
 
 Where `<feature>` can be one of the following:
-* `metal` Install with Metal acceleration.
-* `cuda` Install with CUDA acceleration.
+* `metal` Install with Metal acceleration. 
+* `cuda` Install with CUDA acceleration. Might require additional setup such as installing CUDA libraries.
 * `accelerate` Install with the Accelerate framework.
 
 
