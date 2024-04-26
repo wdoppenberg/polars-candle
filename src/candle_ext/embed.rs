@@ -1,6 +1,7 @@
 // Needed for the `polars_expr` macro
 #![allow(clippy::unused_unit)]
 
+use crate::candle_ext::utils::get_device;
 use glowrs::{PoolingStrategy, SentenceTransformer};
 use polars::error::PolarsResult;
 use polars::prelude::*;
@@ -16,6 +17,13 @@ fn array_f32_output(_: &[Field]) -> PolarsResult<Field> {
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum DeviceArg {
+    Cpu,
+    Gpu,
+}
+
+#[derive(Deserialize)]
 pub struct EmbeddingKwargs {
     /// Huggingface model repository name
     pub model_repo: String,
@@ -25,21 +33,31 @@ pub struct EmbeddingKwargs {
 
     /// Normalize embeddings
     pub normalize: bool,
+
+    /// Device (CPU, GPU)
+    pub device: DeviceArg,
 }
 
-#[polars_expr(output_type_func=array_f32_output)]
+#[polars_expr(output_type_func = array_f32_output)]
 pub fn embed_text(s: &[Series], kwargs: EmbeddingKwargs) -> PolarsResult<Series> {
     let ca = s[0].str()?;
     let name = ca.name();
     let len = ca.len();
 
-    let model = SentenceTransformer::from_repo_string(&kwargs.model_repo)
-        .map_err(|e| polars_err!(ComputeError: "Failed to load model: {}", e))?
-        .with_pooling_strategy(kwargs.pooling);
+    // Set device
+    let is_cpu = match kwargs.device {
+        DeviceArg::Cpu => true,
+        DeviceArg::Gpu => false,
+    };
+    let device = get_device(is_cpu)
+        .map_err(|e| polars_err!(ComputeError: "Could not select device: {}", e))?;
+
+    let model = SentenceTransformer::from_repo_string(&kwargs.model_repo, &device)
+        .map_err(|e| polars_err!(ComputeError: "Failed to load model: {}", e))?;
 
     let sentences: Vec<Option<&str>> = ca.into_iter().collect();
 
-    // Seperate sentences into those with Some and None
+    // Separate sentences into those with Some and None
     let (some_sentences_idx, _): (Vec<_>, Vec<_>) = sentences
         .iter()
         .enumerate()
@@ -53,7 +71,7 @@ pub fn embed_text(s: &[Series], kwargs: EmbeddingKwargs) -> PolarsResult<Series>
 
     // Embed the sentences
     let embeddings = model
-        .encode_batch(some_sentences, kwargs.normalize)
+        .encode_batch(some_sentences, kwargs.normalize, kwargs.pooling)
         .map_err(|e| polars_err!(ComputeError: "Encoding failed with error:\n{}", e))?;
 
     let (_, emb_dim) = embeddings.dims2().map_err(
@@ -61,8 +79,8 @@ pub fn embed_text(s: &[Series], kwargs: EmbeddingKwargs) -> PolarsResult<Series>
     )?;
 
     let emb_arr = embeddings.to_vec2::<f32>().map_err(
-        |e| polars_err!(ComputeError: "Converting embeddings to Vec<Vec<f32>> failed with error:\n{}", e)
-    )?;
+		|e| polars_err!(ComputeError: "Converting embeddings to Vec<Vec<f32>> failed with error:\n{}", e)
+	)?;
 
     // Prepare final arr with None for missing entries
     let mut arr = vec![None; len];
