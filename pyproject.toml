@@ -1,3 +1,8 @@
+[project]
+name = "polars_candle"
+version = "0.1.6"
+requires-python = ">=3.9"
+
 [tool.poetry]
 name = "polars_candle"
 version = "0.1.6"
