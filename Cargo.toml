@@ -14,7 +14,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1.0.79"
-glowrs = "0.4.0"
+glowrs = "0.4.1"
 chrono = "0.4.35"
 ndarray = "0.15.6"
 polars = { version = "0.39.2", features = ["lazy", "dtype-array", "dtype-categorical", "ndarray", "log"] }
