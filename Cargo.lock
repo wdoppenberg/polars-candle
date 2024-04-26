@@ -2044,7 +2044,7 @@ dependencies = [
 
 [[package]]
 name = "polars-candle"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "anyhow",
  "candle-core",
