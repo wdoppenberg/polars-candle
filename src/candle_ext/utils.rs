@@ -1,5 +1,13 @@
 use candle_core::utils::{cuda_is_available, metal_is_available};
 use glowrs::{Device, Result};
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum DeviceArg {
+    Cpu,
+    Gpu,
+}
 
 pub fn get_device(cpu: bool) -> Result<Device> {
     if cpu {

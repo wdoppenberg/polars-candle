@@ -1,6 +1,6 @@
 [package]
 name = "polars-candle"
-version = "0.1.7"
+version = "0.2.0"
 edition = "2021"
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
 description = "A text embedding extension for the Polars Dataframe library."

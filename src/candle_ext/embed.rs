@@ -1,7 +1,7 @@
 // Needed for the `polars_expr` macro
 #![allow(clippy::unused_unit)]
 
-use crate::candle_ext::utils::get_device;
+use crate::candle_ext::utils::{DeviceArg, get_device};
 use glowrs::{PoolingStrategy, SentenceTransformer};
 use polars::error::PolarsResult;
 use polars::prelude::*;
@@ -14,13 +14,6 @@ fn array_f32_output(_: &[Field]) -> PolarsResult<Field> {
         "array_float",
         DataType::List(Box::new(DataType::Float32)),
     ))
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum DeviceArg {
-    Cpu,
-    Gpu,
 }
 
 #[derive(Deserialize)]
