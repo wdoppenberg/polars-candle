@@ -150,6 +150,31 @@ jobs:
           name: wheel-ubuntu-${{ matrix.py-version }}
           path: ${{ github.workspace }}/dist/*
 
+  build-linux-arm:
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    needs: [ build-and-test ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        py-version: [ '3.9', '3.10', '3.11', '3.12' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.py-version }}
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          rust-toolchain: stable
+          target: aarch64
+          args: --release --out dist -i ${{ matrix.py-version }}
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-ubuntu-arm-${{ matrix.py-version }}
+          path: ${{ github.workspace }}/dist/*
+
   build-sdist:
     if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
     needs: [ build-and-test ]
@@ -173,7 +198,7 @@ jobs:
   wheel-publish:
     name: Release
     runs-on: ubuntu-latest
-    needs: [ build-macos, build-windows, build-linux, build-sdist ]
+    needs: [ build-macos, build-windows, build-linux, build-linux-arm, build-sdist ]
     steps:
       - uses: actions/download-artifact@v4
         with:
