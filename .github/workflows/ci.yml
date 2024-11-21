@@ -163,6 +163,9 @@ jobs:
         with:
           python-version: ${{ matrix.py-version }}
 
+      - name: Install OpenSSL
+        run: sudo apt-get install libssl-dev
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:

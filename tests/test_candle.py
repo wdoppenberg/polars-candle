@@ -42,6 +42,16 @@ def test_basic_two_sentences_with_gpu():
     )
 
 
+def test_basic_model_no_repo():
+    df = pl.DataFrame({"s": ["This is a sentence", "This is another sentence"]})
+
+    df = df.with_columns(
+        pl.col("s")
+        .candle.embed_text("nli-distilbert-base", device="gpu")
+        .alias("s_embedding")
+    )
+
+
 def test_basic_with_none():
     df = pl.DataFrame(
         {"s": ["This is a sentence", None, "This is another sentence", None]}
