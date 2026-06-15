@@ -11,7 +11,7 @@ use serde::Deserialize;
 // Output functions
 fn array_f32_output(_: &[Field]) -> PolarsResult<Field> {
     Ok(Field::new(
-        "array_float",
+        "array_float".into(),
         DataType::List(Box::new(DataType::Float32)),
     ))
 }
@@ -93,7 +93,7 @@ pub fn embed_text(s: &[Series], kwargs: EmbeddingKwargs) -> PolarsResult<Series>
 
     // TODO: How to directly create a array of fixed size list arrays?
     let mut builder = ListPrimitiveChunkedBuilder::<Float32Type>::new(
-        &format!("{}_embedding", name),
+        PlSmallStr::from(&format!("{}_embedding", name)),
         len,
         8,
         DataType::Float32,

@@ -1,6 +1,6 @@
 [package]
 name = "polars-candle"
-version = "0.1.9"
+version = "0.1.10"
 edition = "2021"
 authors = ["Wouter Doppenberg <wouterdoppenberg@gmail.com>"]
 description = "A text embedding extension for the Polars Dataframe library."
@@ -13,18 +13,12 @@ crate-type = ["cdylib"]
 
 
 [dependencies]
-anyhow = "1.0.79"
 glowrs = "0.4.1"
-chrono = "0.4.35"
-ndarray = "0.15.6"
-polars = { version = "0.39.2", features = ["lazy", "dtype-array", "dtype-categorical", "ndarray", "log"] }
-pyo3 = { version = "0.21.2", features = ["extension-module"] }
-pyo3-polars = { version = "0.13.0", features = ["derive"] }
+polars = { version = "0.45.1", features = ["lazy", "dtype-array", "dtype-categorical", "ndarray", "log"] }
+pyo3 = { version = "^0.22", features = ["extension-module"] }
+pyo3-polars = { version = "0.19.0", features = ["derive"] }
 serde = { version = "1.0.197", features = ["derive"] }
-serde_json = "1.0.115"
-thiserror = "1.0.56"
-tracing = "0.1.40"
-candle-core = "0.4.1"
+candle-core = "0.8.2"
 
 
 [features]

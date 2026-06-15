@@ -16,7 +16,7 @@ def test_basic_two_sentences():
     assert df["s_embedding"].dtype == pl.Array
 
     df_similarity = (
-        df.join(df, on="s_embedding", how="cross", suffix="_1")
+        df.join(df, how="cross", suffix="_1")
         .filter(pl.col("s") != pl.col("s_1"))
         .with_columns(
             pl.col("s_embedding").dist_arr.cosine("s_embedding_1").alias("cos_dist")
@@ -122,7 +122,7 @@ def test_lazyframe():
     assert df["s_embedding"].dtype == pl.Array
 
     df_similarity = (
-        df.join(df, on="s_embedding", how="cross", suffix="_1")
+        df.join(df, how="cross", suffix="_1")
         .filter(pl.col("s") != pl.col("s_1"))
         .with_columns(
             pl.col("s_embedding").dist_arr.cosine("s_embedding_1").alias("cos_dist")
